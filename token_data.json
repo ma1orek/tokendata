@@ -1,0 +1,34 @@
+import requests
+from bs4 import BeautifulSoup
+
+# URL of the Dextools pair explorer page
+url = "https://www.dextools.io/app/en/solana/pair-explorer/4u1BzTBTuN4Xr4JEo1inMVPYS7EQ6RuYmNnjifHFZy76?t=1728832901085"
+
+# Request the webpage
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+
+# Example: Find the price element (you will need to inspect the page to get the correct tags and classes)
+price_element = soup.find('span', class_='pair-value-price')  # Example class, inspect the actual page for details
+
+# Assuming we have market cap and volume in similar structure (inspect the page for actual details)
+market_cap_element = soup.find('div', class_='pair-market-cap')  # Example
+volume_element = soup.find('div', class_='pair-volume-24h')  # Example
+
+# Extract and print the data
+price = price_element.text if price_element else "Price not found"
+market_cap = market_cap_element.text if market_cap_element else "Market cap not found"
+volume = volume_element.text if volume_element else "Volume not found"
+
+# Output the data to a JSON or serve it to the frontend
+data = {
+    'price': price,
+    'market_cap': market_cap,
+    'volume': volume
+}
+
+print(data)
+
+# You can save this to a JSON file or pass it to the frontend
+with open('token_data.json', 'w') as f:
+    json.dump(data, f)
